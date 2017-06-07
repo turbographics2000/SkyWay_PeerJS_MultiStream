@@ -16,9 +16,6 @@ peer.on('open', id => {
 
 peer.on('call', call => {
   console.log('peer on "call"');
-  webCamSetup(selfView).then(stream => {
-    call.answer(stream);
-  });
   callSetup(call);
 });
 
