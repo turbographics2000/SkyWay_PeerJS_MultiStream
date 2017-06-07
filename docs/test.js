@@ -16,6 +16,7 @@ peer.on('open', id => {
 
 peer.on('call', call => {
   console.log('peer on "call"');
+  call.answer(null);
   callSetup(call);
 });
 
