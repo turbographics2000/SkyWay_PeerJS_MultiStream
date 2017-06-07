@@ -1,7 +1,6 @@
 var debugLevel = 2;
 var deviceIdx = 0;
 var calls = [];
-var remoteId = null;
 var peer = new Peer({ key: 'ce16d9aa-4119-4097-a8a5-3a5016c6a81c', /*debug: 3*/ });
 
 peer.on('open', id => {
@@ -47,7 +46,7 @@ function addStream(video = false, audio = false) {
   console.log('constraints', constraints);
   navigator.mediaDevices.getUserMedia(constraints).then(stream => {
     createVideoElm(selfViewContainer, stream);
-    var call = peer.call(callTo.value || remoteId, stream);
+    var call = peer.call(callTo.value, stream);
     callSetup(call);
   });
 }
