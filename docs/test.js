@@ -4,13 +4,13 @@ var peer = new Peer({ key: 'ce16d9aa-4119-4097-a8a5-3a5016c6a81c', /*debug: 3*/ 
 peer.on('open', id => {
   console.log('peer on "open"');
   myIdDisp.textContent = id;
-  btnStart.style.display = '';
-  btnStart.onclick = evt => {
-    webCamSetup(selfView).then(stream => {
-      var call = peer.call(callTo.value, stream);
-      callSetup(call);
-    });
-  }
+  navigator.mediaDevices.enumerateDevices().then(devs => {
+    var videoDevices = devs.filter(device => device.kind === 'videoinput');
+    if (videoDevices.length > 0) {
+      devices = videoDevices;
+      btnAddStream.style.display = '';
+    }
+  });
 });
 
 peer.on('call', call => {
@@ -20,6 +20,14 @@ peer.on('call', call => {
   });
   callSetup(call);
 });
+
+btnAddStream.onclick = function (evt) {
+  addStream({ deviceId: { exact: devices[deviceIdx].deviceId } });
+  deviceIdx++;
+  if (deviceIdx === devices.length) {
+    btnAddStream.style.display = 'none';
+  }
+}
 
 function createVideoElm(container, stream) {
   var vid = document.createElement('video');
