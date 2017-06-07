@@ -18,7 +18,7 @@ peer.on('open', id => {
 
 peer.on('call', call => {
   console.log('peer on "call"', call);
-  remoteId = call.peer;
+  callTo.value = call.peer;
   call.answer(null);
   callSetup(call);
 });
@@ -47,7 +47,7 @@ function addStream(video = false, audio = false) {
   console.log('constraints', constraints);
   navigator.mediaDevices.getUserMedia(constraints).then(stream => {
     createVideoElm(selfViewContainer, stream);
-    var call = peer.call(callTo.value || pc.remoteId, stream);
+    var call = peer.call(callTo.value || remoteId, stream);
     callSetup(call);
   });
 }
